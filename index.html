@@ -1,0 +1,1434 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JariTenang — Latihan Mengetik 10 Jari</title>
+    <!-- Google Fonts dengan fallback sistem yang bersih -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <style>
+        /* ==========================================================================
+           DESIGN TOKENS & VARIABEL WARNA (LOW CONTRAST & EYE-FRIENDLY)
+           ========================================================================== */
+        :root {
+            /* Tema Terang (Hangat & Lembut) */
+            --bg-main: #F3F4F6;
+            --bg-surface: #EAECEF;
+            --bg-card: #F9FAFB;
+            --text-primary: #334155;
+            --text-secondary: #64748B;
+            --text-muted: #94A3B8;
+            
+            /* Aksen Utama (Muted Sage / Teal) */
+            --accent: #4E7A7B;
+            --accent-soft: rgba(78, 122, 123, 0.14);
+            --accent-hover: #3F6667;
+            
+            /* Status Pengetikan */
+            --correct: #477861;
+            --correct-bg: rgba(71, 120, 97, 0.12);
+            --error: #B85C5C;
+            --error-bg: rgba(184, 92, 92, 0.16);
+            --cursor-bg: rgba(78, 122, 123, 0.22);
+            
+            /* Border & Bayangan Halus */
+            --border-subtle: #DCE0E5;
+            --shadow-soft: 0 4px 20px rgba(51, 65, 85, 0.04);
+            
+            /* Warna Zona Jari (Pastel Lembut - Mode Terang) */
+            --f-pinky-l: #E6D7DF;
+            --f-ring-l: #D9DFEB;
+            --f-middle-l: #D5E5DF;
+            --f-index-l: #EBE3D1;
+            --f-thumb: #E2E4E8;
+            --f-index-r: #E7DDD1;
+            --f-middle-r: #D5E3E6;
+            --f-ring-r: #DFD8E8;
+            --f-pinky-r: #E8D8D8;
+            --key-text: #3B4656;
+            --key-border: #CBD2DC;
+        }
+
+        [data-theme="dark"] {
+            /* Tema Gelap (Muted Dark Slate - Tanpa Kontras Tajam) */
+            --bg-main: #1C2026;
+            --bg-surface: #242931;
+            --bg-card: #22272F;
+            --text-primary: #C4CDD9;
+            --text-secondary: #8A95A5;
+            --text-muted: #5C6675;
+            
+            --accent: #68999A;
+            --accent-soft: rgba(104, 153, 154, 0.16);
+            --accent-hover: #7AA9AA;
+            
+            --correct: #6BA388;
+            --correct-bg: rgba(107, 163, 136, 0.15);
+            --error: #CC7A7A;
+            --error-bg: rgba(204, 122, 122, 0.18);
+            --cursor-bg: rgba(104, 153, 154, 0.28);
+            
+            --border-subtle: #2F3640;
+            --shadow-soft: 0 4px 20px rgba(0, 0, 0, 0.18);
+            
+            /* Warna Zona Jari (Redup & Hangat - Mode Gelap) */
+            --f-pinky-l: #362C33;
+            --f-ring-l: #2B313D;
+            --f-middle-l: #293632;
+            --f-index-l: #383329;
+            --f-thumb: #2E333B;
+            --f-index-r: #362F28;
+            --f-middle-r: #283438;
+            --f-ring-r: #312C38;
+            --f-pinky-r: #382C2C;
+            --key-text: #B8C2D0;
+            --key-border: #3B434F;
+        }
+
+        /* ==========================================================================
+           RESET & TIPOGRAFI DASAR
+           ========================================================================== */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1.5rem 1.25rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        /* ==========================================================================
+           HEADER & PENGATURAN CEPAT
+           ========================================================================== */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding-bottom: 0.5rem;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+        }
+
+        .brand-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background-color: var(--accent-soft);
+            color: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .brand h1 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+        }
+
+        .brand span {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 400;
+            margin-left: 0.25rem;
+        }
+
+        .header-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .icon-btn {
+            background-color: var(--bg-surface);
+            color: var(--text-secondary);
+            border: 1px solid var(--border-subtle);
+            border-radius: 10px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.82rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .icon-btn:hover {
+            color: var(--text-primary);
+            border-color: var(--accent);
+        }
+
+        .icon-btn.active {
+            background-color: var(--accent-soft);
+            color: var(--accent);
+            border-color: transparent;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           BAR KONTROL LEVEL & WAKTU
+           ========================================================================== */
+        .control-bar {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 14px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            box-shadow: var(--shadow-soft);
+        }
+
+        .pill-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.35rem;
+            align-items: center;
+        }
+
+        .pill-label {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-right: 0.35rem;
+            font-weight: 500;
+        }
+
+        .pill-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            padding: 0.42rem 0.8rem;
+            border-radius: 8px;
+            font-size: 0.84rem;
+            font-family: inherit;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .pill-btn:hover {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+        }
+
+        .pill-btn.active {
+            background-color: var(--accent);
+            color: #F8FAFC;
+            font-weight: 500;
+        }
+
+        /* ==========================================================================
+           STATISTIK REAL-TIME
+           ========================================================================== */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.85rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 12px;
+            padding: 0.75rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.45rem;
+            font-weight: 500;
+            color: var(--accent);
+            line-height: 1.2;
+        }
+
+        .stat-title {
+            font-size: 0.76rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        /* ==========================================================================
+           AREA MENGETIK UTAMA
+           ========================================================================== */
+        .typing-wrapper {
+            position: relative;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 1.75rem 2rem;
+            box-shadow: var(--shadow-soft);
+            cursor: text;
+            transition: border-color 0.2s ease;
+        }
+
+        .typing-wrapper:focus-within {
+            border-color: var(--accent);
+        }
+
+        .typing-hint {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+        }
+
+        .finger-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.45rem;
+            background-color: var(--accent-soft);
+            color: var(--accent);
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.82rem;
+        }
+
+        .text-display {
+            font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-size: 1.45rem;
+            line-height: 1.85;
+            letter-spacing: 0.03em;
+            color: var(--text-muted);
+            user-select: none;
+            min-height: 110px;
+            max-height: 170px;
+            overflow-y: auto;
+            scroll-behavior: smooth;
+            word-break: break-word;
+        }
+
+        /* Sembunyikan scrollbar agar bersih */
+        .text-display::-webkit-scrollbar {
+            width: 4px;
+        }
+        .text-display::-webkit-scrollbar-thumb {
+            background-color: var(--border-subtle);
+            border-radius: 4px;
+        }
+
+        .char {
+            position: relative;
+            border-radius: 4px;
+            padding: 1px 1px;
+            transition: background-color 0.08s ease, color 0.08s ease;
+        }
+
+        .char.correct {
+            color: var(--correct);
+            background-color: var(--correct-bg);
+        }
+
+        .char.incorrect {
+            color: var(--error);
+            background-color: var(--error-bg);
+            text-decoration: underline;
+            text-decoration-thickness: 2px;
+        }
+
+        .char.current {
+            color: var(--text-primary);
+            background-color: var(--cursor-bg);
+            border-bottom: 2.5px solid var(--accent);
+            animation: pulseCursor 1.2s infinite ease-in-out;
+        }
+
+        @keyframes pulseCursor {
+            0%, 100% { border-bottom-color: var(--accent); }
+            50% { border-bottom-color: transparent; }
+        }
+
+        /* Input tersembunyi untuk menangkap ketikan secara alami */
+        #hidden-input {
+            position: absolute;
+            opacity: 0;
+            pointer-events: none;
+            width: 1px;
+            height: 1px;
+        }
+
+        .typing-actions {
+            margin-top: 1.25rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .restart-btn {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+            padding: 0.45rem 0.95rem;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-family: inherit;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: all 0.2s ease;
+        }
+
+        .restart-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+
+        /* ==========================================================================
+           KEYBOARD VIRTUAL & PANDUAN ZONA JARI
+           ========================================================================== */
+        .keyboard-section {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 16px;
+            padding: 1.25rem;
+            box-shadow: var(--shadow-soft);
+            transition: all 0.3s ease;
+        }
+
+        .keyboard-section.hidden {
+            display: none;
+        }
+
+        .keyboard-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 0.45rem;
+            max-width: 780px;
+            margin: 0 auto;
+        }
+
+        .kb-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .key {
+            height: 44px;
+            min-width: 44px;
+            padding: 0 0.5rem;
+            border-radius: 8px;
+            border: 1px solid var(--key-border);
+            border-bottom-width: 3px;
+            color: var(--key-text);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.88rem;
+            font-weight: 500;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: transform 0.08s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+            user-select: none;
+        }
+
+        /* Tanda tonjolan pada tombol F dan J */
+        .key.home-bump::after {
+            content: '';
+            width: 10px;
+            height: 2px;
+            background-color: var(--text-secondary);
+            border-radius: 2px;
+            position: absolute;
+            bottom: 4px;
+        }
+
+        /* Pewarnaan Zona Jari */
+        .f-pinky-l  { background-color: var(--f-pinky-l); }
+        .f-ring-l   { background-color: var(--f-ring-l); }
+        .f-middle-l { background-color: var(--f-middle-l); }
+        .f-index-l  { background-color: var(--f-index-l); }
+        .f-thumb    { background-color: var(--f-thumb); }
+        .f-index-r  { background-color: var(--f-index-r); }
+        .f-middle-r { background-color: var(--f-middle-r); }
+        .f-ring-r   { background-color: var(--f-ring-r); }
+        .f-pinky-r  { background-color: var(--f-pinky-r); }
+
+        /* Lebar Tombol Khusus */
+        .key-tab   { flex: 1.4; font-size: 0.75rem; color: var(--text-secondary); }
+        .key-caps  { flex: 1.7; font-size: 0.75rem; color: var(--text-secondary); }
+        .key-shift { flex: 2.2; font-size: 0.75rem; color: var(--text-secondary); }
+        .key-enter { flex: 1.8; font-size: 0.75rem; color: var(--text-secondary); }
+        .key-back  { flex: 1.6; font-size: 0.75rem; color: var(--text-secondary); }
+        .key-space { width: 290px; font-size: 0.78rem; color: var(--text-secondary); }
+
+        /* Sorotan Tombol Target Berikutnya */
+        .key.target {
+            background-color: var(--accent) !important;
+            color: #FFFFFF !important;
+            border-color: var(--accent-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px var(--accent-soft);
+        }
+
+        .key.target::after {
+            background-color: #FFFFFF;
+        }
+
+        /* Efek Tekan Fisik */
+        .key.pressed {
+            transform: translateY(2px);
+            border-bottom-width: 1px;
+        }
+
+        /* Legenda Jari Ringkas */
+        .finger-legend {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--border-subtle);
+            font-size: 0.74rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-item {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+        }
+
+        .legend-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 3px;
+            border: 1px solid var(--key-border);
+        }
+
+        /* ==========================================================================
+           MODAL HASIL LATIHAN
+           ========================================================================== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(28, 32, 38, 0.55);
+            backdrop-filter: blur(3px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            z-index: 100;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+        }
+
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            border-radius: 18px;
+            padding: 2rem;
+            width: 100%;
+            max-width: 440px;
+            box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+            text-align: center;
+            transform: translateY(10px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.show .modal-card {
+            transform: translateY(0);
+        }
+
+        .modal-card h2 {
+            font-size: 1.35rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+        }
+
+        .modal-subtitle {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+        }
+
+        .result-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.85rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .result-box {
+            background-color: var(--bg-surface);
+            border-radius: 12px;
+            padding: 0.9rem;
+        }
+
+        .result-box .val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--accent);
+        }
+
+        .result-box .lbl {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-top: 0.2rem;
+        }
+
+        .modal-actions {
+            display: flex;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .btn-primary, .btn-secondary {
+            flex: 1;
+            padding: 0.7rem 1rem;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background-color: var(--accent);
+            color: #FFFFFF;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background-color: var(--accent-hover);
+        }
+
+        .btn-secondary {
+            background-color: var(--bg-surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border-subtle);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+        }
+
+        /* ==========================================================================
+           FOOTER SEDERHANA & RESPONSIF MOBILE/TABLET
+           ========================================================================== */
+        footer {
+            text-align: center;
+            padding: 1rem;
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+        }
+
+        @media (max-width: 768px) {
+            .typing-wrapper {
+                padding: 1.25rem;
+            }
+            .text-display {
+                font-size: 1.2rem;
+            }
+            .key {
+                height: 36px;
+                min-width: 28px;
+                font-size: 0.75rem;
+                padding: 0 0.25rem;
+            }
+            .key-space {
+                width: 180px;
+            }
+            .control-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- Header Aplikasi -->
+    <header>
+        <div class="brand">
+            <div class="brand-icon" aria-hidden="true">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="2" y="4" width="20" height="16" rx="3"></rect>
+                    <line x1="6" y1="8" x2="6.01" y2="8"></line>
+                    <line x1="10" y1="8" x2="10.01" y2="8"></line>
+                    <line x1="14" y1="8" x2="14.01" y2="8"></line>
+                    <line x1="18" y1="8" x2="18.01" y2="8"></line>
+                    <line x1="8" y1="12" x2="8.01" y2="12"></line>
+                    <line x1="12" y1="12" x2="12.01" y2="12"></line>
+                    <line x1="16" y1="12" x2="16.01" y2="12"></line>
+                    <line x1="7" y1="16" x2="17" y2="16"></line>
+                </svg>
+            </div>
+            <div>
+                <h1>JariTenang <span>Latihan 10 Jari</span></h1>
+            </div>
+        </div>
+
+        <div class="header-controls">
+            <button id="toggle-sound" class="icon-btn active" title="Suara Ketikan Lembut">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                </svg>
+                <span>Suara: Aktif</span>
+            </button>
+            <button id="toggle-kb" class="icon-btn active" title="Tampilkan/Sembunyikan Keyboard Virtual">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+                    <path d="M6 16h12"></path>
+                </svg>
+                <span>Keyboard</span>
+            </button>
+            <button id="toggle-theme" class="icon-btn" title="Ganti Tema Terang / Gelap">
+                <svg id="theme-icon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+                <span id="theme-label">Mode Gelap</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Bar Pilihan Level & Durasi -->
+    <section class="control-bar" aria-label="Pengaturan Latihan">
+        <div class="pill-group" id="level-selector">
+            <span class="pill-label">Level:</span>
+            <button class="pill-btn active" data-level="1">1. Baris Utama</button>
+            <button class="pill-btn" data-level="2">2. Atas & Bawah</button>
+            <button class="pill-btn" data-level="3">3. Kata Umum</button>
+            <button class="pill-btn" data-level="4">4. Paragraf</button>
+        </div>
+
+        <div class="pill-group" id="timer-selector">
+            <span class="pill-label">Waktu:</span>
+            <button class="pill-btn active" data-time="0">Selesai Teks</button>
+            <button class="pill-btn" data-time="30">30d</button>
+            <button class="pill-btn" data-time="60">60d</button>
+        </div>
+    </section>
+
+    <!-- Statistik Langsung -->
+    <section class="stats-bar" aria-label="Statistik Langsung">
+        <div class="stat-card">
+            <div class="stat-value" id="stat-wpm">0</div>
+            <div class="stat-title">KPM (Kata / Menit)</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="stat-acc">100%</div>
+            <div class="stat-title">Akurasi</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-value" id="stat-time">0d</div>
+            <div class="stat-title" id="stat-time-label">Waktu Berjalan</div>
+        </div>
+    </section>
+
+    <!-- Area Latihan Mengetik -->
+    <main class="typing-wrapper" id="typing-box">
+        <div class="typing-hint">
+            <span id="status-text">Langsung ketik huruf yang disorot untuk memulai...</span>
+            <div class="finger-badge" id="finger-guide">
+                <span>Jari Telunjuk Kiri — Huruf F</span>
+            </div>
+        </div>
+
+        <div class="text-display" id="text-display" aria-live="polite"></div>
+        <input type="text" id="hidden-input" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" aria-label="Area input ketikan">
+
+        <div class="typing-actions">
+            <span>Tip: Letakkan telunjuk kiri di <strong>F</strong> dan telunjuk kanan di <strong>J</strong></span>
+            <button class="restart-btn" id="btn-restart" title="Muat ulang teks baru (Esc)">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M23 4v6h-6"></path>
+                    <path d="M1 20v-6h6"></path>
+                    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path>
+                </svg>
+                <span>Teks Baru (Esc)</span>
+            </button>
+        </div>
+    </main>
+
+    <!-- Keyboard Virtual & Panduan Warna Jari -->
+    <section class="keyboard-section" id="keyboard-section" aria-label="Panduan Keyboard Virtual">
+        <div class="keyboard-grid" id="virtual-keyboard">
+            <!-- Baris Angka -->
+            <div class="kb-row">
+                <div class="key f-pinky-l" data-key="`">`</div>
+                <div class="key f-pinky-l" data-key="1">1</div>
+                <div class="key f-ring-l" data-key="2">2</div>
+                <div class="key f-middle-l" data-key="3">3</div>
+                <div class="key f-index-l" data-key="4">4</div>
+                <div class="key f-index-l" data-key="5">5</div>
+                <div class="key f-index-r" data-key="6">6</div>
+                <div class="key f-index-r" data-key="7">7</div>
+                <div class="key f-middle-r" data-key="8">8</div>
+                <div class="key f-ring-r" data-key="9">9</div>
+                <div class="key f-pinky-r" data-key="0">0</div>
+                <div class="key f-pinky-r" data-key="-">-</div>
+                <div class="key f-pinky-r" data-key="=">=</div>
+                <div class="key f-pinky-r key-back" data-key="Backspace">Hapus</div>
+            </div>
+            <!-- Baris Atas (QWERTY) -->
+            <div class="kb-row">
+                <div class="key f-pinky-l key-tab" data-key="Tab">Tab</div>
+                <div class="key f-pinky-l" data-key="q">Q</div>
+                <div class="key f-ring-l" data-key="w">W</div>
+                <div class="key f-middle-l" data-key="e">E</div>
+                <div class="key f-index-l" data-key="r">R</div>
+                <div class="key f-index-l" data-key="t">T</div>
+                <div class="key f-index-r" data-key="y">Y</div>
+                <div class="key f-index-r" data-key="u">U</div>
+                <div class="key f-middle-r" data-key="i">I</div>
+                <div class="key f-ring-r" data-key="o">O</div>
+                <div class="key f-pinky-r" data-key="p">P</div>
+                <div class="key f-pinky-r" data-key="[">[</div>
+                <div class="key f-pinky-r" data-key="]">]</div>
+                <div class="key f-pinky-r" data-key="\">\</div>
+            </div>
+            <!-- Baris Utama (Home Row: ASDF JKL;) -->
+            <div class="kb-row">
+                <div class="key f-pinky-l key-caps" data-key="CapsLock">Caps</div>
+                <div class="key f-pinky-l" data-key="a">A</div>
+                <div class="key f-ring-l" data-key="s">S</div>
+                <div class="key f-middle-l" data-key="d">D</div>
+                <div class="key f-index-l home-bump" data-key="f">F</div>
+                <div class="key f-index-l" data-key="g">G</div>
+                <div class="key f-index-r" data-key="h">H</div>
+                <div class="key f-index-r home-bump" data-key="j">J</div>
+                <div class="key f-middle-r" data-key="k">K</div>
+                <div class="key f-ring-r" data-key="l">L</div>
+                <div class="key f-pinky-r" data-key=";">;</div>
+                <div class="key f-pinky-r" data-key="'">'</div>
+                <div class="key f-pinky-r key-enter" data-key="Enter">Enter</div>
+            </div>
+            <!-- Baris Bawah (ZXCV BNM,./) -->
+            <div class="kb-row">
+                <div class="key f-pinky-l key-shift" data-key="ShiftLeft">Shift</div>
+                <div class="key f-pinky-l" data-key="z">Z</div>
+                <div class="key f-ring-l" data-key="x">X</div>
+                <div class="key f-middle-l" data-key="c">C</div>
+                <div class="key f-index-l" data-key="v">V</div>
+                <div class="key f-index-l" data-key="b">B</div>
+                <div class="key f-index-r" data-key="n">N</div>
+                <div class="key f-index-r" data-key="m">M</div>
+                <div class="key f-middle-r" data-key=",">,</div>
+                <div class="key f-ring-r" data-key=".">.</div>
+                <div class="key f-pinky-r" data-key="/">/</div>
+                <div class="key f-pinky-r key-shift" data-key="ShiftRight">Shift</div>
+            </div>
+            <!-- Baris Spasi -->
+            <div class="kb-row">
+                <div class="key f-thumb key-space" data-key=" ">Spasi (Jempol)</div>
+            </div>
+        </div>
+
+        <!-- Legenda Warna Jari -->
+        <div class="finger-legend">
+            <div class="legend-item"><span class="legend-dot f-pinky-l"></span>Kelingking</div>
+            <div class="legend-item"><span class="legend-dot f-ring-l"></span>Jari Manis</div>
+            <div class="legend-item"><span class="legend-dot f-middle-l"></span>Jari Tengah</div>
+            <div class="legend-item"><span class="legend-dot f-index-l"></span>Telunjuk Kiri</div>
+            <div class="legend-item"><span class="legend-dot f-thumb"></span>Jempol</div>
+            <div class="legend-item"><span class="legend-dot f-index-r"></span>Telunjuk Kanan</div>
+        </div>
+    </section>
+</div>
+
+<footer>
+    Dirancang nyaman untuk latihan mengetik 10 jari setiap hari.
+</footer>
+
+<!-- Modal Ringkasan Hasil Latihan -->
+<div class="modal-overlay" id="result-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-card">
+        <h2 id="modal-title">Latihan Selesai</h2>
+        <p class="modal-subtitle" id="modal-desc">Kerja bagus! Konsistensi lebih penting daripada kecepatan.</p>
+        
+        <div class="result-grid">
+            <div class="result-box">
+                <div class="val" id="res-wpm">0</div>
+                <div class="lbl">Kecepatan (KPM)</div>
+            </div>
+            <div class="result-box">
+                <div class="val" id="res-acc">100%</div>
+                <div class="lbl">Akurasi</div>
+            </div>
+            <div class="result-box">
+                <div class="val" id="res-correct">0</div>
+                <div class="lbl">Karakter Benar</div>
+            </div>
+            <div class="result-box">
+                <div class="val" id="res-errors">0</div>
+                <div class="lbl">Kesalahan</div>
+            </div>
+        </div>
+
+        <div class="modal-actions">
+            <button class="btn-secondary" id="modal-repeat">Ulangi Level</button>
+            <button class="btn-primary" id="modal-next">Level Berikutnya</button>
+        </div>
+    </div>
+</div>
+
+<script>
+/**
+ * ============================================================================
+ * BANK MATERI LATIHAN 10 JARI (BAHASA INDONESIA)
+ * ============================================================================
+ */
+const LESSONS = {
+    // Level 1: Baris Utama (Home Row: A S D F G H J K L ;)
+    1: [
+        "ffff jjjj dddd kkkk ssss llll aaaa ;;;; fjdk slaf jkd; asdf jkl;",
+        "asdf jkl; fdsa ;lkj fjfj dkdk slsl a;a; fghj jhgf asdfg hjkl;",
+        "ada saja lada jala kala fasa gasal kalah salah jaga laga hala",
+        "ajak kakak asal ada jasa; lada halus ada di meja kaca; jaga sikap",
+        "fajar datang kala pagi; kakak asah pisau baja; ada salak dan lada"
+    ],
+    // Level 2: Baris Atas & Bawah
+    2: [
+        "qwer tyui op[] asdf ghjk l;' zxcv bnm, ./ qwerty uiop asdfgh jkl",
+        "ruang tenang waktu pagi hari; burung terbang tinggi di awan biru",
+        "belajar mengetik sepuluh jari butuh sabar fokus dan latihan rutin",
+        "bunga mawar melati tumbuh subur di taman belakang rumah nenek",
+        "kapal berlayar menuju pulau seberang membawa hasil bumi melimpah"
+    ],
+    // Level 3: Kata Umum Bahasa Indonesia
+    3: [
+        "yang dan di ke dari untuk dengan pada adalah ini itu dalam tidak akan",
+        "rumah jalan waktu orang hari tahun kerja belajar makan minum tidur baca",
+        "cepat tepat benar salah mudah sulit tenang damai sehat kuat cerdas bijak",
+        "komputer papan ketik layar cahaya meja kursi buku pena kertas catatan",
+        "pagi siang sore malam hujan cerah angin sejuk gunung laut sungai hutan"
+    ],
+    // Level 4: Kalimat & Paragraf Lengkap
+    4: [
+        "Mengetik sepuluh jari adalah keterampilan dasar yang sangat berguna. Dengan membiasakan setiap jari menekan tombol tugasnya masing-masing, pikiran kita bisa fokus sepenuhnya pada ide yang ingin ditulis tanpa perlu menunduk melihat papan ketik.",
+        "Kecepatan mengetik akan meningkat dengan sendirinya apabila kita mengutamakan ketepatan terlebih dahulu. Jangan terburu-buru saat berlatih; biarkan otot jari mengingat letak setiap huruf secara alami dan santai.",
+        "Postur duduk yang baik juga memengaruhi kenyamanan saat mengetik dalam waktu lama. Pastikan punggung tegak, bahu rileks, dan pergelangan tangan tidak menekan sudut meja secara berlebihan.",
+        "Teknologi informasi berkembang sangat pesat di berbagai bidang kehidupan. Kemampuan mengolah kata dengan efisien membantu kita menyelesaikan pekerjaan kantor, tugas kuliah, maupun tulisan kreatif dengan lebih ringan."
+    ]
+};
+
+/**
+ * ============================================================================
+ * PEMETAAN PANDUAN JARI UNTUK SETIAP KARAKTER
+ * ============================================================================
+ */
+const FINGER_MAP = {
+    '`': 'Kelingking Kiri', '1': 'Kelingking Kiri', 'q': 'Kelingking Kiri', 'a': 'Kelingking Kiri', 'z': 'Kelingking Kiri',
+    '2': 'Jari Manis Kiri', 'w': 'Jari Manis Kiri', 's': 'Jari Manis Kiri', 'x': 'Jari Manis Kiri',
+    '3': 'Jari Tengah Kiri', 'e': 'Jari Tengah Kiri', 'd': 'Jari Tengah Kiri', 'c': 'Jari Tengah Kiri',
+    '4': 'Telunjuk Kiri', '5': 'Telunjuk Kiri', 'r': 'Telunjuk Kiri', 't': 'Telunjuk Kiri',
+    'f': 'Telunjuk Kiri', 'g': 'Telunjuk Kiri', 'v': 'Telunjuk Kiri', 'b': 'Telunjuk Kiri',
+    ' ': 'Jempol (Kiri / Kanan)',
+    '6': 'Telunjuk Kanan', '7': 'Telunjuk Kanan', 'y': 'Telunjuk Kanan', 'u': 'Telunjuk Kanan',
+    'h': 'Telunjuk Kanan', 'j': 'Telunjuk Kanan', 'n': 'Telunjuk Kanan', 'm': 'Telunjuk Kanan',
+    '8': 'Jari Tengah Kanan', 'i': 'Jari Tengah Kanan', 'k': 'Jari Tengah Kanan', ',': 'Jari Tengah Kanan',
+    '9': 'Jari Manis Kanan', 'o': 'Jari Manis Kanan', 'l': 'Jari Manis Kanan', '.': 'Jari Manis Kanan',
+    '0': 'Kelingking Kanan', '-': 'Kelingking Kanan', '=': 'Kelingking Kanan', 'p': 'Kelingking Kanan',
+    '[': 'Kelingking Kanan', ']': 'Kelingking Kanan', '\\': 'Kelingking Kanan', ';': 'Kelingking Kanan',
+    "'": 'Kelingking Kanan', '/': 'Kelingking Kanan'
+};
+
+/**
+ * ============================================================================
+ * EFEK SUARA MEKANIK LEMBUT (WEB AUDIO API - TANPA FILE EKSTERNAL)
+ * ============================================================================
+ */
+class SoftSoundEngine {
+    constructor() {
+        this.enabled = true;
+        this.ctx = null;
+    }
+
+    init() {
+        if (!this.ctx) {
+            const AudioContext = window.AudioContext || window.webkitAudioContext;
+            if (AudioContext) this.ctx = new AudioContext();
+        }
+    }
+
+    playClick(isError = false) {
+        if (!this.enabled) return;
+        try {
+            this.init();
+            if (!this.ctx) return;
+            if (this.ctx.state === 'suspended') this.ctx.resume();
+
+            const osc = this.ctx.createOscillator();
+            const gain = this.ctx.createGain();
+
+            osc.type = isError ? 'triangle' : 'sine';
+            // Nada lembut rendah agar tidak melelahkan telinga
+            const baseFreq = isError ? 180 : 420 + (Math.random() * 40 - 20);
+            osc.frequency.setValueAtTime(baseFreq, this.ctx.currentTime);
+            osc.frequency.exponentialRampToValueAtTime(100, this.ctx.currentTime + 0.035);
+
+            gain.gain.setValueAtTime(isError ? 0.08 : 0.05, this.ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.001, this.ctx.currentTime + 0.035);
+
+            osc.connect(gain);
+            gain.connect(this.ctx.destination);
+
+            osc.start();
+            osc.stop(this.ctx.currentTime + 0.04);
+        } catch (e) {
+            // Abaikan jika browser memblokir audio sebelum interaksi
+        }
+    }
+}
+
+/**
+ * ============================================================================
+ * LOGIKA UTAMA APLIKASI LATIHAN MENGETIK
+ * ============================================================================
+ */
+const state = {
+    level: 1,
+    timeLimit: 0, // 0 = Selesai Teks, 30 = 30 detik, 60 = 60 detik
+    targetText: '',
+    currentIndex: 0,
+    correctCount: 0,
+    errorCount: 0,
+    totalKeystrokes: 0,
+    isStarted: false,
+    isFinished: false,
+    startTime: null,
+    timerInterval: null,
+    lastLessonIndex: -1
+};
+
+const sound = new SoftSoundEngine();
+
+// Referensi Elemen DOM
+const elTextDisplay = document.getElementById('text-display');
+const elHiddenInput = document.getElementById('hidden-input');
+const elTypingBox = document.getElementById('typing-box');
+const elFingerGuide = document.getElementById('finger-guide');
+const elStatusText = document.getElementById('status-text');
+const elStatWpm = document.getElementById('stat-wpm');
+const elStatAcc = document.getElementById('stat-acc');
+const elStatTime = document.getElementById('stat-time');
+const elStatTimeLabel = document.getElementById('stat-time-label');
+const elModal = document.getElementById('result-modal');
+
+/**
+ * Memilih teks latihan acak (tidak mengulang teks yang sama berturut-turut)
+ */
+function pickLessonText(level) {
+    const pool = LESSONS[level] || LESSONS[1];
+    let idx;
+    do {
+        idx = Math.floor(Math.random() * pool.length);
+    } while (pool.length > 1 && idx === state.lastLessonIndex);
+    state.lastLessonIndex = idx;
+
+    // Jika mode timer (30d/60d) dan level 1-3, gabungkan 2 teks agar tidak cepat habis
+    if (state.timeLimit > 0 && level < 4) {
+        const secondIdx = (idx + 1) % pool.length;
+        return pool[idx] + " " + pool[secondIdx];
+    }
+    return pool[idx];
+}
+
+/**
+ * Inisialisasi / Reset Sesi Latihan
+ */
+function initSession() {
+    clearInterval(state.timerInterval);
+    state.targetText = pickLessonText(state.level);
+    state.currentIndex = 0;
+    state.correctCount = 0;
+    state.errorCount = 0;
+    state.totalKeystrokes = 0;
+    state.isStarted = false;
+    state.isFinished = false;
+    state.startTime = null;
+
+    // Reset tampilan statistik
+    elStatWpm.textContent = '0';
+    elStatAcc.textContent = '100%';
+    if (state.timeLimit > 0) {
+        elStatTime.textContent = `${state.timeLimit}d`;
+        elStatTimeLabel.textContent = 'Sisa Waktu';
+    } else {
+        elStatTime.textContent = '0d';
+        elStatTimeLabel.textContent = 'Waktu Berjalan';
+    }
+
+    elStatusText.textContent = 'Langsung ketik huruf yang disorot untuk memulai...';
+    elModal.classList.remove('show');
+    elHiddenInput.value = '';
+
+    renderText();
+    updateGuides();
+    focusInput();
+}
+
+/**
+ * Merender setiap karakter teks ke dalam DOM
+ */
+function renderText() {
+    elTextDisplay.innerHTML = '';
+    const fragment = document.createDocumentFragment();
+
+    for (let i = 0; i < state.targetText.length; i++) {
+        const span = document.createElement('span');
+        span.className = 'char';
+        if (i === 0) span.classList.add('current');
+        span.textContent = state.targetText[i];
+        fragment.appendChild(span);
+    }
+    elTextDisplay.appendChild(fragment);
+    elTextDisplay.scrollTop = 0;
+}
+
+/**
+ * Memperbarui sorotan tombol di keyboard virtual & panduan nama jari
+ */
+function updateGuides() {
+    // Hapus sorotan tombol sebelumnya
+    document.querySelectorAll('.key.target').forEach(k => k.classList.remove('target'));
+
+    if (state.currentIndex >= state.targetText.length) return;
+
+    const nextChar = state.targetText[state.currentIndex];
+    const lowerChar = nextChar.toLowerCase();
+    const isUpper = nextChar !== lowerChar && nextChar.toUpperCase() === nextChar;
+
+    // Update badge nama jari
+    const fingerName = FINGER_MAP[lowerChar] || 'Jari Sesuai Zona';
+    const charLabel = nextChar === ' ' ? 'Spasi' : (isUpper ? `Shift + ${nextChar}` : `Huruf ${nextChar.toUpperCase()}`);
+    elFingerGuide.innerHTML = `<span>${fingerName} — <strong>${charLabel}</strong></span>`;
+
+    // Sorot tombol di keyboard virtual
+    const targetKeyEl = document.querySelector(`.key[data-key="${CSS.escape(lowerChar)}"]`);
+    if (targetKeyEl) {
+        targetKeyEl.classList.add('target');
+    }
+
+    // Jika huruf kapital, sorot juga tombol Shift yang berlawanan
+    if (isUpper) {
+        const isLeftHand = ['q','w','e','r','t','a','s','d','f','g','z','x','c','v','b'].includes(lowerChar);
+        const shiftKey = isLeftHand ? 'ShiftRight' : 'ShiftLeft';
+        const shiftEl = document.querySelector(`.key[data-key="${shiftKey}"]`);
+        if (shiftEl) shiftEl.classList.add('target');
+    }
+}
+
+/**
+ * Menghitung & memperbarui statistik KPM (WPM), Akurasi, dan Waktu
+ */
+function updateStats() {
+    if (!state.isStarted || !state.startTime) return;
+
+    const elapsedSeconds = Math.max(1, (Date.now() - state.startTime) / 1000);
+    const elapsedMinutes = elapsedSeconds / 60;
+
+    // Standar internasional: 1 kata = 5 karakter benar
+    const wpm = Math.round((state.correctCount / 5) / elapsedMinutes);
+    const accuracy = state.totalKeystrokes > 0
+        ? Math.round((state.correctCount / state.totalKeystrokes) * 100)
+        : 100;
+
+    elStatWpm.textContent = wpm;
+    elStatAcc.textContent = `${accuracy}%`;
+
+    if (state.timeLimit > 0) {
+        const remaining = Math.max(0, Math.ceil(state.timeLimit - elapsedSeconds));
+        elStatTime.textContent = `${remaining}d`;
+        if (remaining <= 0 && !state.isFinished) {
+            finishSession();
+        }
+    } else {
+        elStatTime.textContent = `${Math.floor(elapsedSeconds)}d`;
+    }
+}
+
+/**
+ * Memulai penghitung waktu saat ketikan pertama masuk
+ */
+function startTimer() {
+    state.isStarted = true;
+    state.startTime = Date.now();
+    elStatusText.textContent = 'Sedang berlatih... Jaga ritme tetap tenang.';
+
+    state.timerInterval = setInterval(() => {
+        updateStats();
+    }, 250);
+}
+
+/**
+ * Mengakhiri sesi dan menampilkan ringkasan hasil
+ */
+function finishSession() {
+    state.isFinished = true;
+    clearInterval(state.timerInterval);
+
+    const elapsedSeconds = Math.max(1, (Date.now() - state.startTime) / 1000);
+    const wpm = Math.round((state.correctCount / 5) / (elapsedSeconds / 60));
+    const accuracy = state.totalKeystrokes > 0
+        ? Math.round((state.correctCount / state.totalKeystrokes) * 100)
+        : 100;
+
+    document.getElementById('res-wpm').textContent = wpm;
+    document.getElementById('res-acc').textContent = `${accuracy}%`;
+    document.getElementById('res-correct').textContent = state.correctCount;
+    document.getElementById('res-errors').textContent = state.errorCount;
+
+    // Pesan umpan balik personal
+    const descEl = document.getElementById('modal-desc');
+    if (accuracy >= 96 && wpm >= 35) {
+        descEl.textContent = 'Luar biasa! Ritme dan ketepatan jarimu sangat stabil.';
+    } else if (accuracy >= 90) {
+        descEl.textContent = 'Bagus sekali! Akurasimu terjaga dengan sangat baik.';
+    } else {
+        descEl.textContent = 'Terus berlatih pelan-pelan. Fokus pada posisi jari tanpa melihat keyboard.';
+    }
+
+    elModal.classList.add('show');
+}
+
+/**
+ * Menangani input karakter dari pengguna
+ */
+function handleKeyInput(e) {
+    if (state.isFinished) return;
+
+    // Abaikan shortcut sistem seperti Ctrl+R, Alt+Tab, dll.
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+
+    const chars = elTextDisplay.querySelectorAll('.char');
+
+    // Efek visual tombol ditekan pada keyboard virtual
+    highlightPhysicalPress(e.key, e.code);
+
+    // Tombol Escape untuk restart cepat
+    if (e.key === 'Escape') {
+        e.preventDefault();
+        initSession();
+        return;
+    }
+
+    // Dukungan Backspace untuk mengoreksi ketikan sebelumnya
+    if (e.key === 'Backspace') {
+        e.preventDefault();
+        if (state.currentIndex > 0) {
+            chars[state.currentIndex]?.classList.remove('current');
+            state.currentIndex--;
+            chars[state.currentIndex].classList.remove('correct', 'incorrect');
+            chars[state.currentIndex].classList.add('current');
+            sound.playClick(false);
+            updateGuides();
+        }
+        return;
+    }
+
+    // Hanya proses karakter tunggal yang dapat dicetak
+    if (e.key.length !== 1) return;
+    e.preventDefault();
+
+    if (!state.isStarted) {
+        startTimer();
+    }
+
+    const expectedChar = state.targetText[state.currentIndex];
+    const currentSpan = chars[state.currentIndex];
+
+    state.totalKeystrokes++;
+    currentSpan.classList.remove('current');
+
+    if (e.key === expectedChar) {
+        currentSpan.classList.add('correct');
+        state.correctCount++;
+        sound.playClick(false);
+    } else {
+        currentSpan.classList.add('incorrect');
+        state.errorCount++;
+        sound.playClick(true);
+    }
+
+    state.currentIndex++;
+    updateStats();
+
+    // Cek apakah seluruh teks sudah selesai diketik
+    if (state.currentIndex >= state.targetText.length) {
+        finishSession();
+        return;
+    }
+
+    // Pindahkan kursor ke karakter berikutnya dan gulir otomatis jika perlu
+    const nextSpan = chars[state.currentIndex];
+    nextSpan.classList.add('current');
+    
+    const containerRect = elTextDisplay.getBoundingClientRect();
+    const spanRect = nextSpan.getBoundingClientRect();
+    if (spanRect.bottom > containerRect.bottom - 15) {
+        elTextDisplay.scrollTop += 42;
+    }
+
+    updateGuides();
+}
+
+/**
+ * Efek animasi singkat saat tombol fisik ditekan
+ */
+function highlightPhysicalPress(key, code) {
+    let selector = `.key[data-key="${CSS.escape(key.toLowerCase())}"]`;
+    if (code === 'ShiftLeft' || code === 'ShiftRight') {
+        selector = `.key[data-key="${code}"]`;
+    } else if (key === 'Backspace') {
+        selector = `.key[data-key="Backspace"]`;
+    }
+    const el = document.querySelector(selector);
+    if (el) {
+        el.classList.add('pressed');
+        setTimeout(() => el.classList.remove('pressed'), 120);
+    }
+}
+
+function focusInput() {
+    elHiddenInput.focus();
+}
+
+/**
+ * ============================================================================
+ * EVENT LISTENERS & INTERAKSI UI
+ * ============================================================================
+ */
+// Fokuskan input saat area ketik diklik atau pengguna mulai menekan tombol di mana saja
+elTypingBox.addEventListener('click', focusInput);
+document.addEventListener('keydown', (e) => {
+    if (!elModal.classList.contains('show')) {
+        focusInput();
+        handleKeyInput(e);
+    } else if (e.key === 'Enter' || e.key === 'Escape') {
+        initSession();
+    }
+});
+
+// Pemilih Level
+document.querySelectorAll('#level-selector .pill-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#level-selector .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.level = parseInt(btn.dataset.level, 10);
+        initSession();
+    });
+});
+
+// Pemilih Durasi Waktu
+document.querySelectorAll('#timer-selector .pill-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#timer-selector .pill-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.timeLimit = parseInt(btn.dataset.time, 10);
+        initSession();
+    });
+});
+
+// Tombol Muat Ulang Teks
+document.getElementById('btn-restart').addEventListener('click', (e) => {
+    e.stopPropagation();
+    initSession();
+});
+
+// Toggle Suara
+const btnSound = document.getElementById('toggle-sound');
+btnSound.addEventListener('click', () => {
+    sound.enabled = !sound.enabled;
+    btnSound.classList.toggle('active', sound.enabled);
+    btnSound.querySelector('span').textContent = sound.enabled ? 'Suara: Aktif' : 'Suara: Mati';
+    if (sound.enabled) sound.playClick(false);
+    focusInput();
+});
+
+// Toggle Visibilitas Keyboard Virtual
+const btnKb = document.getElementById('toggle-kb');
+const kbSection = document.getElementById('keyboard-section');
+btnKb.addEventListener('click', () => {
+    const isHidden = kbSection.classList.toggle('hidden');
+    btnKb.classList.toggle('active', !isHidden);
+    focusInput();
+});
+
+// Toggle Tema Gelap / Terang (Low Contrast)
+const btnTheme = document.getElementById('toggle-theme');
+const themeLabel = document.getElementById('theme-label');
+btnTheme.addEventListener('click', () => {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    const nextTheme = isDark ? 'light' : 'dark';
+    html.setAttribute('data-theme', nextTheme);
+    themeLabel.textContent = nextTheme === 'dark' ? 'Mode Terang' : 'Mode Gelap';
+    focusInput();
+});
+
+// Aksi pada Modal Hasil
+document.getElementById('modal-repeat').addEventListener('click', () => {
+    initSession();
+});
+
+document.getElementById('modal-next').addEventListener('click', () => {
+    const nextLevel = state.level < 4 ? state.level + 1 : 1;
+    state.level = nextLevel;
+    document.querySelectorAll('#level-selector .pill-btn').forEach(b => {
+        b.classList.toggle('active', parseInt(b.dataset.level, 10) === nextLevel);
+    });
+    initSession();
+});
+
+// Jalankan aplikasi saat halaman siap
+window.addEventListener('DOMContentLoaded', initSession);
+</script>
+
+</body>
+</html>
